@@ -1,0 +1,11 @@
+name: test
+description: DorkPipe and MCP independent Go test
+docker_preflight: false
+steps:
+  - id: execute
+    kind: host
+    cwd: repo
+    scopes:
+      source: repo
+      artifacts: artifacts
+    run: assets/run.sh

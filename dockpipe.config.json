@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "compile": {
+    "workflows": [
+      "workflows",
+      "packages"
+    ]
+  },
+  "secrets": {},
+  "packages": {
+    "namespace": "dockpipeproject"
+  }
+}

@@ -1,0 +1,22 @@
+schema: 2
+description: DorkPipe-owned feature backlog; independent of the DockPipe core backlog.
+
+tasks:
+  - id: DORK-001
+    topic: Unified Knowledge, Graph and Context Management
+    path: docs/agents/tasks/unified-knowledge-context/index.yaml
+    dispatch:
+      readiness: unclassified
+      ownership: unclaimed
+
+  - id: DORK-002
+    topic: Skills Manager and Target Integration
+    path: docs/agents/tasks/skills-manager/index.yaml
+    dispatch:
+      readiness: unclassified
+      ownership: unclaimed
+
+maintenance:
+  - Keep active initiatives here and domain requirements in their linked task records.
+  - Preserve task history and avoid duplicate initiatives across repositories.
+  - Core runtime and generic extension dependencies remain owned by DockPipe.

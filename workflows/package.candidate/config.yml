@@ -1,0 +1,11 @@
+name: package.candidate
+description: Prepare tested Linux amd64 package tools against the committed SDK source pin
+docker_preflight: false
+steps:
+  - id: prepare
+    kind: host
+    cwd: repo
+    scopes:
+      source: repo
+      artifacts: artifacts
+    run: assets/run.sh

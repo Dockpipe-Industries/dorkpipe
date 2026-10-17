@@ -1,0 +1,22 @@
+schema: 1
+id: DORK-002
+topic: Skills Manager and Target Integration
+entrypoint: overview.md
+
+dispatch:
+  readiness: unclassified
+  ownership: unclaimed
+
+routes:
+  orientation:
+    read: [overview.md]
+  architecture:
+    read: [overview.md]
+
+documents:
+  - path: overview.md
+    role: deferred skills scope, reuse, boundaries and audit acceptance
+
+maintenance:
+  - Resolve document paths relative to this index.
+  - Keep dispatch metadata synchronized with docs/agents/task-index.yaml.

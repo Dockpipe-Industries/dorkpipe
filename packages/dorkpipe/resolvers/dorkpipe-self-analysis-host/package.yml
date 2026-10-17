@@ -1,0 +1,31 @@
+schema: 1
+kind: resolver
+name: dorkpipe-self-analysis-host
+version: 0.6.5
+min_dockpipe_version: 0.6.17
+author: Dockpipe
+license: Apache-2.0
+repository: https://github.com/Dockpipe-Industries/dorkpipe
+namespace: dockpipeproject
+allow_clone: true
+distribution: source
+title: Repository analysis (host)
+description: Collect repository facts and prepare an AI handoff using the host execution path. Requires
+  the configured DorkPipe tools.
+catalog_type: workflow
+categories:
+- ai
+- development
+platforms:
+- windows
+- deb
+dependencies:
+  host:
+  - id: bash
+    command: bash
+    description: Required to run the packaged self-analysis host script.
+    install:
+      windows: winget install Git.Git
+      deb: sudo apt-get update && sudo apt-get install -y bash
+requires_resolvers:
+- dorkpipe
