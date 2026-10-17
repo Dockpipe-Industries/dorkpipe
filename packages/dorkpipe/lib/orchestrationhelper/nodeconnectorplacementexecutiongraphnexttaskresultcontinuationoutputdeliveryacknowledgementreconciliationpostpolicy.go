@@ -227,6 +227,14 @@ func OpenNodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDel
 	if err != nil {
 		return nil, err
 	}
+
+	// Read the decision/request pair under the same lock used by Decide so an
+	// opener cannot combine artifacts from different publication states.
+	pathLock, _ := nodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicyLocks.LoadOrStore(root, &sync.Mutex{})
+	lock := pathLock.(*sync.Mutex)
+	lock.Lock()
+	defer lock.Unlock()
+
 	value := &NodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicies{root: root, expected: normalized, record: inputs.record, receipt: inputs.receipt, writeDecision: writeJSONFileAtomic, writeRequest: writeJSONFileAtomic}
 	decision, decisionExists, err := loadNodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicyDecision(root, normalized, inputs)
 	if err != nil {

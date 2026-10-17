@@ -15,5 +15,6 @@ python3 -B tooling/test_independent_hooks.py
 python3 -B tooling/test_validate_package_store.py
 python3 -B tooling/test_generate_compat_workflows.py
 python3 -B tooling/test_package_delivery.py
+python3 -B tooling/test_publish_package_host.py
 python3 -B tooling/test_bootstrap.py
 printf '%s\n' 'Repository scaffold and workflow declarations passed; application/build proof is separate.'

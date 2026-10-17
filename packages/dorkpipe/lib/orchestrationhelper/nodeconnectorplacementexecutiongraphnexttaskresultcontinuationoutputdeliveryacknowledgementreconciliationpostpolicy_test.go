@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"sync"
 	"testing"
+	"time"
 )
 
 type nodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicyTestFixture struct {
@@ -248,6 +249,80 @@ func TestNodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDel
 			}
 			assertNodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicyArtifactsAbsent(t, value)
 		})
+	}
+}
+
+func TestPostReconciliationPolicyOpenWaitsForDecisionAndRequestPublication(t *testing.T) {
+	value := newNodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicyTestFixture(t, "succeeded", NodeConnectorPlacementExecutionGraphNextTaskResultContinuationRoute, "approved")
+	writer := mustOpenNodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicies(t, value)
+	requestPublicationStarted := make(chan struct{})
+	resumeRequestPublication := make(chan struct{})
+	var resumeOnce sync.Once
+	resume := func() {
+		resumeOnce.Do(func() {
+			close(resumeRequestPublication)
+		})
+	}
+	waitFor := func(done <-chan struct{}, operation string) {
+		t.Helper()
+		select {
+		case <-done:
+		case <-time.After(5 * time.Second):
+			t.Fatalf("%s did not complete", operation)
+		}
+	}
+	writer.writeRequest = func(path string, request any) error {
+		close(requestPublicationStarted)
+		<-resumeRequestPublication
+		return writeJSONFileAtomic(path, request)
+	}
+	fixture := mustMarshalNodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicy(t, value.fixture)
+	writerFinished := make(chan struct{})
+	var writerError error
+	go func() {
+		defer close(writerFinished)
+		_, _, writerError = writer.Decide(fixture)
+	}()
+	t.Cleanup(func() {
+		resume()
+		waitFor(writerFinished, "writer cleanup")
+	})
+	waitFor(requestPublicationStarted, "request publication pause")
+
+	readerStarted := make(chan struct{})
+	readerFinished := make(chan struct{})
+	var reader *NodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicies
+	var readerError error
+	go func() {
+		defer close(readerFinished)
+		close(readerStarted)
+		reader, readerError = OpenNodeConnectorPlacementExecutionGraphNextTaskResultContinuationOutputDeliveryAcknowledgementReconciliationPostPolicies(value.root, value.expected)
+	}()
+	t.Cleanup(func() {
+		resume()
+		waitFor(readerFinished, "reader cleanup")
+	})
+	waitFor(readerStarted, "reader start")
+	returnedDuringPublication := false
+	select {
+	case <-readerFinished:
+		returnedDuringPublication = true
+	case <-time.After(100 * time.Millisecond):
+	}
+	resume()
+	waitFor(writerFinished, "writer")
+	waitFor(readerFinished, "reader")
+	if writerError != nil {
+		t.Fatal(writerError)
+	}
+	if returnedDuringPublication {
+		t.Fatalf("Open returned during decision/request publication: %v", readerError)
+	}
+	if readerError != nil {
+		t.Fatal(readerError)
+	}
+	if reader.decision == nil || reader.request == nil {
+		t.Fatal("Open did not load the complete published decision/request pair")
 	}
 }
 
