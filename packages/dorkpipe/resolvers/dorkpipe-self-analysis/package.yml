@@ -1,0 +1,31 @@
+schema: 1
+kind: resolver
+name: dorkpipe-self-analysis
+version: 0.6.5
+min_dockpipe_version: 0.6.17
+author: Dockpipe
+license: Apache-2.0
+repository: https://github.com/Dockpipe-Industries/dorkpipe
+namespace: dockpipeproject
+allow_clone: true
+distribution: source
+title: Repository analysis (container)
+description: Collect repository facts and prepare an AI handoff using the container execution path. Requires
+  the configured DorkPipe tools.
+catalog_type: workflow
+categories:
+- ai
+- development
+platforms:
+- windows
+- deb
+dependencies:
+  host:
+  - id: docker
+    command: docker
+    description: Required to run the isolated self-analysis container.
+    install:
+      windows: winget install Docker.DockerDesktop
+      deb: sudo apt-get update && sudo apt-get install -y docker.io docker-compose-plugin
+requires_resolvers:
+- dorkpipe
