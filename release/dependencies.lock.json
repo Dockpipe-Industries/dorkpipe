@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "dockpipe_go_sdk": {
+    "version": "0.1.1-source.c8e6e7102c16a873",
+    "source_commit": "c604b291d463906acf0a05ef8cfe2efc071bdbaa",
+    "source_digest": "c8e6e7102c16a873f43b4b69f6c4a4c5b1187505421abc1b7c60762cec944eb0",
+    "manifest_sha256": "2e2d2fbb53a2261ae5bda4ef122505b1bc875dab6190ab73c1c514326296a06e",
+    "archive_sha256": "235945df5ba24b435e6f203f31494fc96b11357033f72396d091a1c80190bfdf"
+  }
+}

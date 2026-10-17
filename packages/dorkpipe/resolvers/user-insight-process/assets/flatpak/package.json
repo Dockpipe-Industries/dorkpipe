@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "artifacts": [
+    {
+      "kind": "resolver",
+      "name": "user-insight-process"
+    },
+    {
+      "kind": "workflow",
+      "name": "user-insight-process"
+    }
+  ],
+  "tools": [],
+  "host_commands": [],
+  "required_files": []
+}

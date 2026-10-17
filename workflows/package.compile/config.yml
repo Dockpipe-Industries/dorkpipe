@@ -1,0 +1,11 @@
+name: package.compile
+description: Verify source hooks and export exactly twenty-four owned Linux amd64 DorkPipe packages
+docker_preflight: false
+steps:
+  - id: compile
+    kind: host
+    cwd: repo
+    scopes:
+      source: repo
+      artifacts: artifacts
+    run: assets/run.sh

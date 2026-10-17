@@ -1,0 +1,11 @@
+name: sdk.candidate
+description: Fetch a pinned SDK and verify DorkPipe and MCP candidates
+docker_preflight: false
+steps:
+  - id: execute
+    kind: host
+    cwd: repo
+    scopes:
+      source: repo
+      artifacts: artifacts
+    run: assets/run.sh
