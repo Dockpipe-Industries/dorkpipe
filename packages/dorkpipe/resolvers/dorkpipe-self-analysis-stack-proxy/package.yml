@@ -1,0 +1,37 @@
+schema: 1
+kind: resolver
+name: dorkpipe-self-analysis-stack-proxy
+version: 0.6.5
+min_dockpipe_version: 0.6.17
+author: Dockpipe
+license: Apache-2.0
+repository: https://github.com/Dockpipe-Industries/dorkpipe
+namespace: dockpipeproject
+allow_clone: true
+distribution: source
+title: Repository analysis (proxied local stack)
+description: Collect repository facts and prepare an AI handoff using the proxied local stack execution
+  path. Requires the configured DorkPipe tools.
+catalog_type: workflow
+categories:
+- ai
+- development
+platforms:
+- windows
+- deb
+dependencies:
+  host:
+  - id: bash
+    command: bash
+    description: Required to run the packaged dev-stack scripts.
+    install:
+      windows: winget install Git.Git
+      deb: sudo apt-get update && sudo apt-get install -y bash
+  - id: docker
+    command: docker
+    description: Required for the DorkPipe sidecar stack and isolated self-analysis container.
+    install:
+      windows: winget install Docker.DockerDesktop
+      deb: sudo apt-get update && sudo apt-get install -y docker.io docker-compose-plugin
+requires_resolvers:
+- dorkpipe

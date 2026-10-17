@@ -1,0 +1,11 @@
+name: package.host
+description: Validate or publish exact frozen standalone package assets to immutable package-host keys
+docker_preflight: false
+steps:
+  - id: publish
+    kind: host
+    cwd: repo
+    scopes:
+      source: repo
+      artifacts: artifacts
+    run: assets/run.sh

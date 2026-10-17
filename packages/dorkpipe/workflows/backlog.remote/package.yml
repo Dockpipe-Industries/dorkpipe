@@ -1,0 +1,11 @@
+schema: 1
+kind: workflow
+name: backlog.remote
+version: 0.6.5
+namespace: dockpipeproject
+license: Apache-2.0
+repository: https://github.com/Dockpipe-Industries/dorkpipe
+depends: [dorkpipe]
+min_dockpipe_version: 0.6.17
+requires_resolvers:
+  - dorkpipe
