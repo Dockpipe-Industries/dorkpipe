@@ -1,0 +1,36 @@
+schema: 1
+id: DORK-001
+topic: Unified Knowledge, Graph and Context Management
+entrypoint: overview.md
+
+dispatch:
+  readiness: unclassified
+  ownership: unclaimed
+
+routes:
+  orientation:
+    read:
+      - overview.md
+  architecture:
+    read:
+      - overview.md
+      - integration-inventory.md
+      - design-request.md
+  implementation:
+    read:
+      - overview.md
+      - integration-inventory.md
+      - design-request.md
+
+documents:
+  - path: overview.md
+    role: authoritative new-feature scope, ownership and acceptance
+  - path: integration-inventory.md
+    role: bounded source inventory, reuse limits and cross-repository dependencies
+  - path: design-request.md
+    role: original request; migration premise superseded by user clarification in overview
+
+maintenance:
+  - Resolve document paths relative to this index.
+  - Keep dispatch metadata synchronized with docs/agents/task-index.yaml.
+  - Keep knowledge ownership here and only generic extension dependencies in DockPipe.

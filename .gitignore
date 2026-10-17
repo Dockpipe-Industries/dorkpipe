@@ -1,0 +1,11 @@
+/build/
+/artifacts/
+/bin/
+node_modules/
+target/
+__pycache__/
+bin/.dockpipe/
+.dockpipe/
+*.tfstate
+*.tfstate.*
+.terraform/
