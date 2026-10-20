@@ -55,9 +55,10 @@ const server = http.createServer(async (req, res) => {
     }
     res.end(await response.text());
   } catch (error) {
+    console.error("dorkpipe-mcp-proxy: upstream request failed", error);
     res.statusCode = 502;
     res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ error: "proxy_error", message: error && error.message ? error.message : String(error) }));
+    res.end(JSON.stringify({ error: "proxy_error", message: "The upstream MCP request failed." }));
   }
 });
 
