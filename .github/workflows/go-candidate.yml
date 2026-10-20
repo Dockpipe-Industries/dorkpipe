@@ -14,6 +14,11 @@ on:
       - .github/workflows/go-candidate.yml
   workflow_dispatch:
     inputs:
+      publish_production:
+        description: Publish the exact qualified frozen pin to production
+        required: true
+        type: boolean
+        default: false
       publish_existing:
         description: Publish the exact private frozen release pinned in package-host-source.lock.json
         required: true
@@ -127,8 +132,7 @@ jobs:
         run: dockpipe --workflow-file workflows/package.host/config.yml
 
   publish-package-host-production:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: candidate
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master' && inputs.publish_production == true
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     environment: release

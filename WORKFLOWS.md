@@ -107,3 +107,10 @@ Malformed or mismatched metadata fails before release writes or asset consumptio
 Staging and master package-host promotion preserve their existing environment gates
 and immutable candidate/release paths. Frozen historical 0.6.4 assets stay unchanged;
 public package candidates use 0.6.5 and retain the existing editor identities/versions.
+
+Production package-host publication is manual. Select `master` when dispatching
+the delivery workflow and explicitly set `publish_production` to true. It defaults
+to false; pushes, pull requests and changing the default branch do not publish
+production. The existing `release` environment gate and frozen source-pin validation
+still apply. A valid `release/package-host-source.lock.json` and qualified payloads
+are required before a future production dispatch. Staging publication is unchanged.
