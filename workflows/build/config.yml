@@ -1,0 +1,11 @@
+name: build
+description: DorkPipe and MCP independent Go build
+docker_preflight: false
+steps:
+  - id: execute
+    kind: host
+    cwd: repo
+    scopes:
+      source: repo
+      artifacts: artifacts
+    run: assets/run.sh

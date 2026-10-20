@@ -1,0 +1,12 @@
+name: package.delivery
+description: Assemble the validated package store and qualified editors for immutable release
+
+docker_preflight: false
+steps:
+  - id: assemble
+    kind: host
+    cwd: repo
+    scopes:
+      source: repo
+      artifacts: artifacts
+    run: assets/run.sh

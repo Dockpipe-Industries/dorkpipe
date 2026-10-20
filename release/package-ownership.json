@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "version": "0.6.5",
+  "namespace": "dockpipeproject",
+  "resolvers": [
+    "compliance-handoff",
+    "dorkpipe",
+    "dorkpipe-orchestrator",
+    "dorkpipe-self-analysis",
+    "dorkpipe-self-analysis-host",
+    "dorkpipe-self-analysis-stack",
+    "dorkpipe-self-analysis-stack-proxy",
+    "user-insight-process"
+  ],
+  "workflows": [
+    "backlog.remote",
+    "cas.01.app-server",
+    "codex.cli.update",
+    "compliance-handoff",
+    "docs.optimize-orchestrate",
+    "docs.orchestrate",
+    "dorkpipe",
+    "dorkpipe-orchestrator",
+    "dorkpipe-self-analysis",
+    "dorkpipe-self-analysis-host",
+    "dorkpipe-self-analysis-stack",
+    "dorkpipe-self-analysis-stack-proxy",
+    "example.brain",
+    "orchestrate.stack",
+    "orchestrator",
+    "skills.render",
+    "software.dev",
+    "user-insight-process"
+  ],
+  "min_dockpipe_version": "0.6.17",
+  "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+}

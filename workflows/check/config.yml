@@ -1,0 +1,11 @@
+name: check
+description: Validate repository guidance and DockPipe workflows
+docker_preflight: false
+steps:
+  - id: execute
+    kind: host
+    cwd: repo
+    scopes:
+      source: repo
+      artifacts: artifacts
+    run: assets/run.sh
