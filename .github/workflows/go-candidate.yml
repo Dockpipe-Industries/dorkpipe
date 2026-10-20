@@ -1,0 +1,186 @@
+name: Go package candidates
+on:
+  push:
+    branches: [js/dev, dev, staging, master]
+    paths:
+      - VERSION
+      - LICENSE
+      - release/**
+      - tooling/**
+      - packages/dorkpipe/**
+      - packages/dorkpipe-mcp/**
+      - workflows/**
+      - .github/scripts/bootstrap-dockpipe*
+      - .github/workflows/go-candidate.yml
+  workflow_dispatch:
+    inputs:
+      publish_production:
+        description: Publish the exact qualified frozen pin to production
+        required: true
+        type: boolean
+        default: false
+      publish_existing:
+        description: Publish the exact private frozen release pinned in package-host-source.lock.json
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  candidate:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version: '1.26.9'
+          cache-dependency-path: |
+            packages/dorkpipe/lib/go.sum
+            packages/dorkpipe-mcp/go.sum
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Bootstrap pinned DockPipe
+        run: bash .github/scripts/bootstrap-dockpipe.sh --keep-archive
+      - name: Validate and build candidates
+        id: sdk
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          dockpipe --workflow-file workflows/check/config.yml
+          dockpipe --workflow-file workflows/sdk.candidate/config.yml
+          printf 'artifacts=%s\n' "$(cat "$(dockpipe scope workflow sdk.candidate delivery.path)")" >> "$GITHUB_OUTPUT"
+      - name: Compile and freeze package delivery
+        id: delivery
+        run: |
+          dockpipe --workflow-file workflows/editor.candidate/config.yml
+          dockpipe --workflow-file workflows/package.compile/config.yml
+          dockpipe --workflow-file workflows/package.delivery/config.yml
+          printf 'delivery=%s\n' "$(cat "$(dockpipe scope workflow package.delivery delivery.path)")" >> "$GITHUB_OUTPUT"
+      - name: Validate frozen package-host input
+        env:
+          PACKAGE_HOST_MODE: local
+          PACKAGE_HOST_SOURCE_SHA: ${{ github.sha }}
+          PACKAGE_HOST_DELIVERY: ${{ steps.delivery.outputs.delivery }}
+        run: dockpipe --workflow-file workflows/package.host/config.yml
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: dorkpipe-go-candidates
+          path: ${{ steps.sdk.outputs.artifacts }}
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: dorkpipe-package-delivery
+          path: ${{ steps.delivery.outputs.delivery }}
+          if-no-files-found: error
+  publish-staging:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+    needs: candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: dorkpipe-package-delivery
+          path: delivery
+      - name: Publish frozen staging release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -B tooling/publish_package_delivery.py --delivery delivery
+
+  publish-package-host-staging:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+    needs: [candidate, publish-staging]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: release-staging
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Bootstrap pinned DockPipe
+        run: bash .github/scripts/bootstrap-dockpipe.sh
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: dorkpipe-package-delivery
+          path: delivery
+      - name: Publish qualified frozen candidate to package host
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACKAGE_HOST_MODE: frozen
+          PACKAGE_HOST_SOURCE_SHA: ${{ github.sha }}
+          PACKAGE_HOST_DELIVERY: delivery
+          PACKAGE_HOST_PUBLISH: '1'
+          PACKAGE_HOST_CHANNEL: staging
+          PACKAGE_HOST_ENVIRONMENT: release-staging
+          DOCKPIPE_RELEASE_BUCKET: ${{ vars.DOCKPIPE_RELEASE_BUCKET }}
+          R2_ENDPOINT_URL: ${{ vars.R2_ENDPOINT_URL }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: dockpipe --workflow-file workflows/package.host/config.yml
+
+  publish-package-host-production:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master' && inputs.publish_production == true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: release
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Bootstrap pinned DockPipe
+        run: bash .github/scripts/bootstrap-dockpipe.sh
+      - name: Promote exact qualified frozen release to production package host
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACKAGE_HOST_MODE: pin
+          PACKAGE_HOST_PUBLISH: '1'
+          PACKAGE_HOST_CHANNEL: production
+          PACKAGE_HOST_ENVIRONMENT: release
+          DOCKPIPE_RELEASE_BUCKET: ${{ vars.DOCKPIPE_RELEASE_BUCKET }}
+          R2_ENDPOINT_URL: ${{ vars.R2_ENDPOINT_URL }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: dockpipe --workflow-file workflows/package.host/config.yml
+
+  publish-existing-package-host:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: release-staging
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Bootstrap pinned DockPipe
+        run: bash .github/scripts/bootstrap-dockpipe.sh
+      - name: Validate or publish pinned existing frozen release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACKAGE_HOST_MODE: pin
+          PACKAGE_HOST_PUBLISH: ${{ inputs.publish_existing && '1' || '0' }}
+          PACKAGE_HOST_CHANNEL: staging
+          PACKAGE_HOST_ENVIRONMENT: release-staging
+          DOCKPIPE_RELEASE_BUCKET: ${{ vars.DOCKPIPE_RELEASE_BUCKET }}
+          R2_ENDPOINT_URL: ${{ vars.R2_ENDPOINT_URL }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: dockpipe --workflow-file workflows/package.host/config.yml

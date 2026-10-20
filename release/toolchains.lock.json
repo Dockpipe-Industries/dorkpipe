@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "dockpipe": {
+    "version": "0.6.17",
+    "release_tag": "v0.6.17-staging.38994929768.1.53e295fff81d",
+    "platform": "linux-amd64",
+    "format": "tar.gz",
+    "url": "https://github.com/Dockpipe-Industries/dockpipe/releases/download/v0.6.17-staging.38994929768.1.53e295fff81d/dockpipe_0.6.17_linux_amd64.tar.gz",
+    "sha256": "88f1e52cfa38e3dfe2293fd33ae4290792f87dc6edbce414cc89bdad7ae8a978"
+  }
+}

@@ -1,0 +1,20 @@
+name: Repository contracts
+on:
+  push:
+    branches: [js/dev, dev, staging, master]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Bootstrap pinned DockPipe
+        run: bash .github/scripts/bootstrap-dockpipe.sh
+      - name: Verify root contracts
+        run: dockpipe --workflow-file workflows/check/config.yml

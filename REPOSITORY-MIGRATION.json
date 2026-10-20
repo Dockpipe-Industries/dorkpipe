@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "date": "2026-10-17",
+  "source_repository_id": 1310518550,
+  "source_repository_before": "Dockpipe-Industries/dorkpipe",
+  "source_repository_now": "Dockpipe-Industries/dorkpipe-platform",
+  "source_commit": "b1f93d50be9974b03d49285fec3ae158f7d8c2fb",
+  "original_snapshot_sha256": "74e7ca02dc19d9226cdc1c4c5b35d68abc4756d19b827320d60895c9693dbdfe",
+  "destination_repository_id": 1423113319,
+  "destination_repository": "Dockpipe-Industries/dorkpipe",
+  "history_policy": "Audited source snapshot only; original private Git history and frozen releases retained in dorkpipe-platform.",
+  "license_policy": "Preserve inherited licenses, notices and migration source inventories.",
+  "native_sdks_included": false,
+  "feature_backlog_implemented": false
+}

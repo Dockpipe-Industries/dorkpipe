@@ -1,0 +1,31 @@
+schema: 1
+kind: resolver
+name: dorkpipe-orchestrator
+version: 0.6.5
+min_dockpipe_version: 0.6.17
+author: Dockpipe
+license: Apache-2.0
+repository: https://github.com/Dockpipe-Industries/dorkpipe
+namespace: dockpipeproject
+allow_clone: true
+distribution: source
+title: DorkPipe task graph runner
+description: Run a configured DorkPipe task graph and collect its results. Requires the tools and providers
+  selected by the graph.
+catalog_type: workflow
+categories:
+- ai
+- development
+platforms:
+- windows
+- deb
+dependencies:
+  host:
+  - id: bash
+    command: bash
+    description: Required to run the packaged orchestrator host script.
+    install:
+      windows: winget install Git.Git
+      deb: sudo apt-get update && sudo apt-get install -y bash
+requires_resolvers:
+- dorkpipe

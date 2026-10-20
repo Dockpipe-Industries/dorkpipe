@@ -1,0 +1,22 @@
+schema: 1
+kind: resolver
+name: dorkpipe
+version: 0.6.5
+min_dockpipe_version: 0.6.17
+author: Dockpipe
+license: Apache-2.0
+repository: https://github.com/Dockpipe-Industries/dorkpipe
+namespace: dockpipeproject
+allow_clone: true
+distribution: source
+title: DorkPipe automation assets
+description: Shared scripts and helper tools used by DorkPipe automation workflows; this package is not
+  a standalone AI service.
+catalog_type: integration
+categories:
+- ai
+- development
+platforms:
+- windows
+- deb
+- macos
