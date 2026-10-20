@@ -47,6 +47,11 @@ for f in test_runner_cleanup.sh test_cloud_usage_failure.sh test_normalize_ci_sc
 		failed=1
 	fi
 done
+echo "--- dorkpipe/tests/test_mcp_proxy.js ---"
+if ! node "$DIR/test_mcp_proxy.js"; then
+	echo "dorkpipe/tests/test_mcp_proxy.js FAILED" >&2
+	failed=1
+fi
 echo "--- dorkpipe skills.render smoke ---"
 if DOCKPIPE_ASSETS_DIR="$ROOT/packages/dorkpipe/resolvers/dorkpipe/assets" \
 	DOCKPIPE_WORKFLOW_NAME="skills.render.smoke" \
