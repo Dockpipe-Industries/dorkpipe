@@ -1,0 +1,17 @@
+schema: 1
+id: TASK-012-provider-pools
+topic: Inherited provider-pool contracts
+entrypoint: overview.md
+dispatch:
+  readiness: deferred
+  ownership: unclaimed
+routes:
+  orientation:
+    read:
+    - overview.md
+  contract:
+    read:
+    - provider-pool-contract.md
+  leasing:
+    read:
+    - provider-pool-leasing.md
