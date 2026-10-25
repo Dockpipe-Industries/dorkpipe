@@ -29,6 +29,10 @@ chmod +x "$fixture/tools/git" "$fixture/tools/go" "$RUNNER_FIXTURE_ROOT/src/bin/
 for test_script in "$DIR"/test_*.sh; do
 	printf '#!/usr/bin/env bash\nexit 0\n' > "$RUNNER_FIXTURE_ROOT/packages/dorkpipe/tests/$(basename "$test_script")"
 done
+# Keep JavaScript test entries inert, like the shell tests above.
+for test_script in "$DIR"/test_*.js; do
+	printf '// Inert test fixture.\n' > "$RUNNER_FIXTURE_ROOT/packages/dorkpipe/tests/$(basename "$test_script")"
+done
 cp "$DIR/lib/test-tools.sh" "$RUNNER_FIXTURE_ROOT/packages/dorkpipe/tests/lib/test-tools.sh"
 printf 'exit 0\n' > "$RUNNER_FIXTURE_ROOT/packages/dorkpipe/resolvers/dorkpipe/assets/scripts/skills-render.sh"
 cat > "$RUNNER_FIXTURE_ROOT/packages/dorkpipe/tests/test_runner_cleanup.sh" <<'SCRIPT'
