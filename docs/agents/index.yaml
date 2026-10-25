@@ -1,0 +1,23 @@
+schema: 1
+description: DorkPipe-owned guidance; core runtime contracts remain in Dockpipe.
+routes:
+  orientation:
+    read:
+    - AGENTS.md
+    - docs/README.md
+  backlog:
+    read:
+    - docs/agents/task-index.yaml
+  agentic_workflow:
+    read:
+    - docs/agents/workflows/ai-workflow-value-bar.md
+    - docs/agents/workflows/model-escalation.md
+    - docs/workflows/harness-configuration.md
+  docs_generation:
+    read:
+    - docs/agents/workflows/docs-generation.md
+    - docs/agents/workflows/planner-promotion-model.md
+  mcp:
+    read:
+    - docs/agents/runtime/mcp-and-analysis.md
+    - packages/dorkpipe-mcp/README.md
