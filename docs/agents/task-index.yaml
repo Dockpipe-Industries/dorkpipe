@@ -1,22 +1,43 @@
 schema: 2
 description: DorkPipe-owned feature backlog; independent of the DockPipe core backlog.
-
 tasks:
-  - id: DORK-001
-    topic: Unified Knowledge, Graph and Context Management
-    path: docs/agents/tasks/unified-knowledge-context/index.yaml
-    dispatch:
-      readiness: unclassified
-      ownership: unclaimed
-
-  - id: DORK-002
-    topic: Skills Manager and Target Integration
-    path: docs/agents/tasks/skills-manager/index.yaml
-    dispatch:
-      readiness: unclassified
-      ownership: unclaimed
-
+- id: DORK-001
+  topic: Unified Knowledge, Graph and Context Management
+  path: docs/agents/tasks/unified-knowledge-context/index.yaml
+  dispatch:
+    readiness: unclassified
+    ownership: unclaimed
+- id: DORK-002
+  topic: Skills Manager and Target Integration
+  path: docs/agents/tasks/skills-manager/index.yaml
+  dispatch:
+    readiness: unclassified
+    ownership: unclaimed
+- id: TASK-008
+  topic: DorkPipe AI features in DockPipe
+  path: docs/agents/tasks/agentic-app-ui/index.yaml
+  dispatch:
+    readiness: unclassified
+    ownership: unclaimed
+- id: TASK-013
+  topic: Codex App Server adapter for top-level orchestrators
+  path: docs/agents/tasks/codex-app-server-adapter/index.yaml
+  dispatch:
+    readiness: unclassified
+    ownership: unclaimed
+- id: TASK-034
+  topic: Claude Managed Agents remote provider adapter
+  path: docs/agents/tasks/claude-managed-agents-adapter/index.yaml
+  dispatch:
+    readiness: unclassified
+    ownership: unclaimed
+- id: TASK-012-provider-pools
+  topic: DorkPipe provider-pool contracts inherited from TASK-012
+  path: docs/agents/tasks/provider-pools/index.yaml
+  dispatch:
+    readiness: deferred
+    ownership: unclaimed
 maintenance:
-  - Keep active initiatives here and domain requirements in their linked task records.
-  - Preserve task history and avoid duplicate initiatives across repositories.
-  - Core runtime and generic extension dependencies remain owned by DockPipe.
+- Keep active initiatives here and domain requirements in their linked task records.
+- Preserve task history and avoid duplicate initiatives across repositories.
+- Core runtime and generic extension dependencies remain owned by DockPipe.

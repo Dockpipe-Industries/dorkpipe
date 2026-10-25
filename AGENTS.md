@@ -1,6 +1,6 @@
 # DorkPipe agent guide
 
-DorkPipe owns the agentic package/harness, separate MCP package and both editor-extension source trees. It consumes generic Dockpipe primitives. AI features, including knowledge/context, chat and model integrations, belong to DorkPipe and contribute to the existing DockPipe app, CLI and unified MCP gateway. They do not define a separate DockPipe AI app/package; this integration remains backlog work pending direction review.
+DorkPipe owns the agentic package/harness, separate MCP package and companion editor integration. It consumes generic Dockpipe primitives. AI features, including knowledge/context, chat and model integrations, belong to DorkPipe and contribute to the existing DockPipe app, CLI and unified MCP gateway. They do not define a separate DockPipe AI app/package; this integration remains backlog work pending direction review.
 
 Read `packages/dorkpipe/README.md`, `README-dorkpipe-workflows.md` beside it and affected package manifests/helpers/tests for orchestration; `packages/dorkpipe-mcp/README.md` for MCP; `tooling/vscode-extensions/README.md` and `.github/workflows/editor-candidates.yml` for editor work. Extraction evidence is in `README.md`, `MIGRATION-SOURCES.json` and `EDITOR-MIGRATION-SOURCES.json`.
 
@@ -33,3 +33,7 @@ was renamed to private `dorkpipe-platform`; its history and frozen releases rema
 Website/platform and private integrations stay separate. See REPOSITORY-MIGRATION.json
 for provenance. The public Go SDK is pinned independently; native SDKs are excluded.
 Finish the direction audit and qualified staging checkpoint before new feature work.
+
+Agent guidance routes through [docs/agents/index.yaml](docs/agents/index.yaml).
+Dockpipe and PipeLang own their language extensions; historical extraction records
+do not restore those implementations here.
